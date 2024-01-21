@@ -1,2 +1,6 @@
-# Algorithm-Solve
-This is a auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+알고리즘 문제의 풀이를 기록하는 저장소 입니다.
+
+꾸준히 푸는것을 목표로 하고 있으며 천천히 성장하는 모습을 기록하기 위해 만들었습니다.
+백준/프로그래머스의 문제를 해결할때마다 기록됩니다.
+
+크롬확장프로그램 백준허브를 이용하였습니다. :D
