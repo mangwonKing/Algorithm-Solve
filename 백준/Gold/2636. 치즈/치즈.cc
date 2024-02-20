@@ -80,8 +80,6 @@ int main() {
 					dfs(i, j);
 			}
 		}
-		//cout << area;
-		// 
 		// 공기영역 연관컴포넌트 찾고 치즈속 특수 처리
 		memset(visited, 0, sizeof(visited));// visited 초기화
 		notAir.clear(); // 새로운 영역이니 초기화하고 진행
@@ -101,20 +99,8 @@ int main() {
 						}
 					}
 				}
-				
 			}
 		}
-
-		//cout << "------------------------------\n";// 디버깅 라인
-		//for (int i = 0; i < n; i++)
-		//{
-		//	for (int j = 0; j < m; j++)
-		//	{
-		//		cout << pan[i][j] << " ";
-		//	}
-		//	cout << "\n";
-		//}
-
 		// 치즈속이 아닌 순수 공기와 맞닿는 치즈 찾고 0으로 변경 그리고 치즈속 공간처리 원위치
 		memset(edge, 0, sizeof(edge));
 		for (int i = 0; i < n; i++)
@@ -144,17 +130,6 @@ int main() {
 				pan[a.first][a.second] = 0; //다시 0으로 돌려주기
 			}
 		}
-
-		//cout << "------------------------------\n"; // 디버깅 라인
-		//for (int i = 0; i < n; i++)
-		//{
-		//	for (int j = 0; j < m; j++)
-		//	{
-		//		cout << pan[i][j] << " ";
-		//	}
-		//	cout << "\n";
-		//}
-
 		// 횟수 ++
 		cnt++;
 		// pan 검사 (모두 0이 되었는지) 맞으면 break
@@ -170,9 +145,7 @@ int main() {
 				}
 			}
 		}
-		//cout << cnt<<" 회 ------------------------------\n";// 디버깅 라인
 	}
 	cout << cnt << "\n" << area;
-
 	return 0;
 }
