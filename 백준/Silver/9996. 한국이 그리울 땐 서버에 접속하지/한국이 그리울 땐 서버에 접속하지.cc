@@ -1,47 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
+int n, flag;
+string code;
+string pre; //앞 부분
+string suf; //뒷 부분
+string file;
 int main() {
-	//getline(cin, str);
-	int n;
-	string pattern;
+	ios::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+	//getline(cin, str); 공백 포함 입력받기
 	cin >> n;
-	cin >> pattern;
-	//패턴 처리
-	int len = pattern.size() - 1;
-	
-	//문자열 입력 및 패턴 비교
+	cin >> code;
+	pre = code.substr(0, code.find('*'));
+	suf = code.substr(code.find('*') + 1);
 	for (int i = 0; i < n; i++)
-	{	
-		bool flag = true;
-		string name;
-		cin >> name;
-		if (len > name.size()) {
+	{
+		flag = true;
+		cin >> file;
+		if (pre.length() + suf.length() > file.length())
+		{
 			cout << "NE\n";
 			continue;
 		}
-		for (int i = 0; i < name.size(); i++)
+		for (int j = 0; j < pre.length(); j++)
 		{
-			if (pattern[i] == '*')break;
-			if (pattern[i] != name[i]) {
+			if (file[j] != pre[j])
+			{
 				flag = false;
-				cout << "NE\n";
 				break;
 			}
 		}
-		if (flag == false) continue;
-		for (int i = 1; i <= name.size(); i++)
+		for (int j = 0; j < suf.length(); j++)
 		{
-			if (pattern[pattern.size()-i] == '*')break;
-			if (pattern[pattern.size() - i] != name[name.size()-i]) {
+			if (file[file.length() - suf.length() + j] != suf[j])
+			{
 				flag = false;
-				cout << "NE\n";
 				break;
 			}
 		}
-		if (flag)cout << "DA\n";
+		
+		if (flag) cout << "DA\n";
+		else cout << "NE\n";
 	}
-	
 	return 0;
-	
 }
