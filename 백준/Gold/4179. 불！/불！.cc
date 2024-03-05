@@ -1,94 +1,76 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define X first
-#define Y second
-
-string board[1001] = {};
-int dirF[1001][1001]; // 불의 이동
-int dirJ[1001][1001]; // 지훈이의 이동
-
+int dy[4] = { -1,0,1,0 };
 int dx[4] = { 0,1,0,-1 };
-int dy[4] = { 1,0,-1,0 };
-
-int main(void) {
+int vis1[1002][1002]; //불 의 이동
+int vis2[1002][1002]; //지훈이 의 이동
+char miro[1002][1002];
+pair<int, int> ji;
+vector<pair<int, int>> fire;
+int r, c;
+int ext = -1;
+int main() {
 	ios::sync_with_stdio(0);
-	cin.tie(0);
-	
-	int x, y;
-	cin >> x >> y;
-
-	queue<pair<int, int>> q1;
-	queue<pair<int, int>> q2;
-
-	for (int i = 0; i < x; i++)
+	cin.tie(0); cout.tie(0);
+	//getline(cin, str); 공백 포함 입력받기
+	//입력
+	cin >> r >> c;
+	for (int i = 0; i < r; i++)
 	{
-		fill(dirF[i], dirF[i] + y, -1);
-		fill(dirJ[i], dirJ[i] + y, -1);
-		cin >> board[i];
-	}
-	for (int i = 0; i < x; i++)
-	{
-		for (int j = 0; j < y; j++)
-		{ 
-			if (board[i][j] == 'F')
-			{
-				q1.push({ i,j });
-				dirF[i][j] = 0;
-			}
-			if (board[i][j] == 'J')
-			{
-				q2.push({ i,j });
-				dirJ[i][j] = 0;
-			}
+		for (int j = 0; j < c; j++)
+		{
+			cin >> miro[i][j];
+			if (miro[i][j] == 'J') ji = { i,j };
+			if (miro[i][j] == 'F') fire.push_back({ i,j });
 		}
 	}
-
-	while (!q1.empty())// 불의 이동을 기록
+	// 불 bfs
+	queue<pair<int, int>>q;
+	for (pair<int, int> idx : fire) //모든 불 위치로
 	{
-		auto cur = q1.front(); 
-		q1.pop();
+		q.push({ idx.first,idx.second });
+		vis1[idx.first][idx.second] = 1;
+	}
+	while (!q.empty())
+	{
+		int y = q.front().first;
+		int x = q.front().second;
+		q.pop();
 		for (int i = 0; i < 4; i++)
 		{
-			int nx = cur.X + dx[i];
-			int ny = cur.Y + dy[i];
-
-			if (nx < 0 || nx >= x || ny < 0 || ny >= y)continue;
-			if (board[nx][ny] == '#' || dirF[nx][ny] >= 0)continue;
-			dirF[nx][ny] = dirF[cur.X][cur.Y] + 1;
-			q1.push({ nx,ny });
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+			if (ny < 0 || ny >= r || nx < 0 || nx >= c)continue;
+			if (vis1[ny][nx] > 0 || miro[ny][nx] == '#')continue;
+			q.push({ ny,nx });
+			vis1[ny][nx] = vis1[y][x] + 1;
 		}
 	}
-	/*for (int i = 0; i < x; i++)
+	// 지훈 bfs
+	queue<pair<int, int>>q2;
+	q2.push({ ji.first, ji.second });
+	vis2[ji.first][ji.second] = 1;
+	while (!q2.empty())
 	{
-		for (int j = 0; j < y; j++)
-		{
-			cout << dirF[i][j];
-		}
-		cout << "\n";
-	}*/
-	while (!q2.empty())// 지훈이 이동
-	{
-		auto cur = q2.front();
+		int y = q2.front().first;
+		int x = q2.front().second;
 		q2.pop();
 		for (int i = 0; i < 4; i++)
 		{
-			int nx = cur.X + dx[i];
-			int ny = cur.Y + dy[i];
-			//탈출 성공 = 범위를 벗어났다는 것! 그러니 여기를
-			//탈출로 처리하면 된다.,
-			if (nx < 0 || nx >= x || ny < 0 || ny >= y)
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+			if (ny < 0 || ny >= r || nx < 0 || nx >= c)
 			{
-				cout << dirJ[cur.X][cur.Y]+1;// 마지막 이동횟수+
+				cout << vis2[y][x];
 				return 0;
 			}
-			if (board[nx][ny] == '#' || dirJ[nx][ny] >= 0)continue;
-			if (dirF[nx][ny] != -1&&dirF[nx][ny] <= dirJ[cur.X][cur.Y]+1)continue;//불이 먼저 와있는 경우 못지나감
-			dirJ[nx][ny] = dirJ[cur.X][cur.Y] + 1;
-			q2.push({ nx,ny });
+			if (vis2[ny][nx] > 0 || miro[ny][nx] == '#')continue;
+			if (vis1[ny][nx] <= vis2[y][x] + 1 && vis1[ny][nx] != 0)continue;
+			q2.push({ ny,nx });
+			vis2[ny][nx] = vis2[y][x]+1;
 		}
 	}
-	cout << "IMPOSSIBLE";// 위에서 리턴이 안되면 탈출을 못한것
-	
+	cout << "IMPOSSIBLE";
+	return 0;
 }
-
