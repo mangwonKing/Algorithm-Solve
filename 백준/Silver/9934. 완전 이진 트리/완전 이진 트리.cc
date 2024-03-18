@@ -6,16 +6,16 @@ int tree[2050];
 int k;
 
 int cnt = 0;
-void preOrder(int now)
+void inOrder(int now)
 {
 	if (tree[now*2] == 0) //tree의 마지막 이라면
 	{
 		tree[now] = nums[++cnt];
 		return;
 	}
-	preOrder(now * 2);
+	inOrder(now * 2);
 	tree[now] = nums[++cnt];
-	preOrder(now * 2 + 1);
+	inOrder(now * 2 + 1);
 
 }
 int main() {
@@ -28,7 +28,7 @@ int main() {
 		cin >> nums[i];
 		tree[i] = 1;
 	}
-	preOrder(1);
+	inOrder(1);
 	for (int i = 1; i <= k; i++)
 	{
 		for (int j = pow(2,i-1); j < pow(2, i); j++)
