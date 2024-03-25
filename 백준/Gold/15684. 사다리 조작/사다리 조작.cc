@@ -1,41 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int INF = 987654321;
-int n, m, h, a, b, ret = INF, visited[34][34];
-bool check(){
-    for(int i = 1; i <= n; i++){
-        int start = i;
-        for(int j = 1; j <= h; j++){
-            if(visited[j][start])start++;
-            else if(visited[j][start - 1])start--;
-        }
-        if(start != i) return false;
-    }
-    return true;
+
+int n, m, h;
+int lad[34][34];
+int mn = 5;
+bool game()
+{
+	for (int i = 1; i <= n; i++)
+	{
+		int st = i;
+		for (int j = 1; j <= h; j++)
+		{
+			if (lad[j][st])st++;
+			else if (lad[j][st - 1])st--;
+		}
+		if (st != i) return false;
+	}
+	return true;
 }
-void go(int here, int cnt){ 
-    if(cnt > 3 || cnt >= ret) return;
-    if(check()){
-        ret = min(ret, cnt); return;
-    }
-    for(int i = here; i <= h; i++){
-        for(int j = 1; j < n; j++){
-            if(visited[i][j] || visited[i][j - 1] || visited[i][j + 1]) continue;
-            visited[i][j] = 1;
-            go(i, cnt + 1);
-            visited[i][j] = 0;
-        }
-    }
+
+void solution(int row , int cnt)
+{
+	if (cnt > 3 || cnt >= mn)return;
+	if (game())
+	{
+		mn = min(mn, cnt);
+		return;
+	}
+	for (int i = row; i <= h; i++)
+	{
+		for (int j = 1; j < n; j++)
+		{
+			if (lad[i][j] || lad[i][j + 1] || lad[i][j - 1])continue;
+			lad[i][j] = 1;
+			solution(i, cnt + 1);
+			lad[i][j] = 0;
+		}
+	}
 }
+
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-    cout.tie(NULL);
-    cin >> n >> m >> h;
-    for(int i = 0; i < m; i++){
-        cin >> a >> b; visited[a][b] = 1;
-    }
-    go(1, 0);
-    cout << ((ret == INF) ? -1 : ret) << "\n";
+	ios::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+	//getline(cin, str); 공백 포함 입력받기
+	cin >> n >> m >> h;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		lad[a][b] = 1;
+	}
+	solution(1, 0);
+	if (mn > 3) cout << -1;
+	else cout << mn;
 	return 0;
 }
