@@ -1,48 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dam[6][3] =
+
+int d[6][3] =
 {
-	{9,3,1},{9,1,3},{3,9,1},{3,1,9},{1,9,3},{1,3,9}
+	{9,3,1}, {9,1,3},{3,9,1},{3,1,9},{1,3,9},{1,9,3}
 };
-int scv[62][62][62];
 int vis[62][62][62];
-int mn;
-struct hp
-{
+int sc[62][62][62];
+int a[3];
+int n;
+
+struct scv {
 	int a, b, c;
 };
-int n;
-vector<int> f;
-
-void bfs(int a, int b ,int c)
-{
-	queue<hp> q;
-	q.push({ a,b,c });
-	vis[a][b][c] = 1;
-	while (!q.empty())
-	{
-		if (vis[0][0][0])
-		{
-			mn = vis[0][0][0]-1;
-			return;
-		}
-		int x = q.front().a;
-		int y = q.front().b;
-		int z = q.front().c;
-		q.pop();
-		for (int i = 0; i < 6; i++)
-		{
-			int nx = max(0,x - dam[i][0]);
-			int ny = max(0,y - dam[i][1]);
-			int nz = max(0,z - dam[i][2]);
-			
-			if (vis[nx][ny][nz])continue;
-			q.push({ nx,ny,nz });
-			vis[nx][ny][nz] = vis[x][y][z] + 1;
-		}
-	}
-}
 
 int main() {
 	ios::sync_with_stdio(0);
@@ -51,15 +22,36 @@ int main() {
 	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
-		int a;
-		cin >> a;
-		f.push_back(a);
+		cin >> a[i];
 	}
-	while (f.size() < 3)
+	sc[a[0]][a[1]][a[2]] = 1;
+	vis[a[0]][a[1]][a[2]] = 1;
+	queue<scv> q;
+	q.push({ a[0],a[1],a[2] });
+	while (!q.empty())
 	{
-		f.push_back(0);
+		int a = q.front().a;
+		int b = q.front().b;
+		int c = q.front().c;
+
+		q.pop();
+
+		for (int i = 0; i < 6; i++)
+		{
+			int na = a - d[i][0];
+			int nb = b - d[i][1];
+			int nc = c - d[i][2];
+			if (na < 0) na = 0;
+			if (nb < 0) nb = 0;
+			if (nc < 0) nc = 0;
+			if (na == 0 && nb == 0 && nc == 0)
+			{
+				cout << vis[a][b][c];
+				return 0;
+			}
+			if (vis[na][nb][nc])continue;
+			vis[na][nb][nc] = vis[a][b][c] + 1;
+			q.push({ na,nb,nc });
+		}
 	}
-	bfs(f[0], f[1], f[2]);
-	cout << mn;
-	return 0;
 }
