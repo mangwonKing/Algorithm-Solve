@@ -2,31 +2,28 @@
 using namespace std;
 
 int n;
-vector<int> nums;
-vector<char> ops;
+vector<int> num;
+vector<char> op;
 int mx = INT_MIN;
-int oper(char op, int a, int b)
+int oper(int a, int b ,int idx)
 {
-	if (op == '+')return a + b;
-	if (op == '-')return a - b;
-	if (op == '*')return a * b;
-	return -1;
+	if (op[idx] == '+')return a + b;
+	else if (op[idx] == '-')return a - b;
+	else return a * b;
 }
 
-void solution(int here, int pfs)
+void solution(int now, int sum)
 {
-	if (here == nums.size() - 1)
+	if (now == num.size() - 1)
 	{
-		mx = max(mx, pfs);
+		mx = max(mx, sum);
 		return;
 	}
 
-	solution(here + 1, oper(ops[here], pfs, nums[here + 1]));
-	if (here + 2 < nums.size())
-	{
-		int right = oper(ops[here + 1], nums[here + 1], nums[here + 2]);
-		solution(here + 2, oper(ops[here], pfs, right));
-	}
+	solution(now + 1, oper(sum, num[now + 1], now));
+	if (now + 2 >= num.size()) return;
+	int temp = oper(num[now + 1], num[now + 2], now + 1);
+	solution(now + 2, oper(sum, temp, now));
 }
 
 int main() {
@@ -36,20 +33,20 @@ int main() {
 	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
-		if (i % 2 == 0)
-		{
+		
+		if (i % 2 == 0) {
 			int a;
 			cin >> a;
-			nums.push_back(a);
+			num.push_back(a);
 		}
 		else
 		{
-			char a;
-			cin >> a;
-			ops.push_back(a);
+			char c;
+			cin >> c;
+			op.push_back(c);
 		}
 	}
-	solution(0, nums[0]);
+	solution(0, num[0]);
 	cout << mx;
-	return 0;
+
 }
