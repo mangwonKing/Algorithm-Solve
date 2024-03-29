@@ -3,52 +3,49 @@ using namespace std;
 
 int tree[52];
 int n;
-int del;
+int m;
 int leaf = 0;
-void delsub(int parent)
+void del(int d)
 {
+	tree[d] = -2;
 	for (int i = 0; i < n; i++)
 	{
-		if (tree[i] == parent)
+		if (tree[i] == d)
 		{
-			tree[i] = -2;
-			delsub(i);
+			del(i);
 		}
 	}
 }
 
-void search(int parent)
+void search(int now)
 {
-	bool find = false;
+	int flag = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if (tree[i] == parent)
+		if (tree[i] == now)
 		{
-			find = true;
 			search(i);
+			flag++;
 		}
 	}
-	if (!find ) leaf++;
+	if (flag == 0)leaf++;
 }
-
 int main() {
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 	//getline(cin, str); 공백 포함 입력받기
 	cin >> n;
-	for (int i = 0; i <  n ;i++)
+	for (int i = 0; i < n; i++)
 	{
-		cin >> tree[i];
+		cin >>tree[i];
 	}
-	cin >> del;
-	if (tree[del] == -1) //루트노드를 바로 지운 경우
+	cin >> m;
+	if (tree[m] == -1)
 	{
-		cout << leaf;
+		cout << 0;
 		return 0;
 	}
-	tree[del] = -2;
-	delsub(del);
+	del(m);
 	search(-1);
-	cout<< leaf;
-	return 0;
+	cout << leaf;
 }
