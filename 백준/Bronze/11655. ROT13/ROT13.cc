@@ -2,20 +2,30 @@
 using namespace std;
 
 int main() {
-	string str;
-	getline(cin, str);
-	for (int i = 0; i < str.size(); i++)
-	{
-		if (str[i] >= 65 && str[i] < 97) {
-			if (str[i] + 13 > 'Z') str[i] = str[i] + 13 - 'Z' + 'A' - 1;
-			else str[i] += 13;
-		}
-		else if (str[i] >= 97 && str[i] <= 122) {
-			if (str[i] + 13 > 'z') str[i] = str[i] + 13 - 'z' + 'a' - 1;
-			else str[i] += 13;
-		}
-	}
-	cout << str;
-	return 0;
-	
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    //getline(cin, str); 공백 포함 입력받기
+    string str;
+    string code;
+    getline(cin, str);
+
+    for (auto s : str)
+    {
+        if (s >= 'a' && s <= 'z')
+        {
+            if (s + 13 > 'z')code.push_back(s + 13 - 'z' + 'a'-1);
+            else code.push_back(s + 13);
+        }
+        else if (s >= 'A' && s <= 'Z')
+        {
+            if (s + 13 > 'Z')code.push_back(s + 13 - 'Z' + 'A'-1);
+            else code.push_back(s + 13);
+        }
+        else
+        {
+            code.push_back(s);
+        }
+    }
+    cout << code;
+    return 0;
 }
